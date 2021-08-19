@@ -10,7 +10,7 @@ class ProfileView(generic.ListView):
 
     def get_queryset(self):
         user_item = User.objects.get(pk = self.kwargs['pk'])
-        object_list = models.Bb.objects.filter(user_id=user_item)
+        object_list = models.Bb.objects.filter(user=user_item)
         return object_list
 
     def get_context_data(self, **kwargs):
@@ -22,8 +22,10 @@ class ProfileView(generic.ListView):
         elif Room.objects.filter(member_second = self.request.user).filter(member_first = context['current_user']):
             room = Room.objects.filter(member_second = self.request.user).filter(member_first = context['current_user'])
         else:
-            room = Room.objects.create(member_first = context['current_user'], member_second = self.request.user)
+            if context['current_user'] != self.request.user:
+                room = Room.objects.create(member_first = context['current_user'], member_second = self.request.user)
         room = room[0]
+        
         context['room'] = room.id
         return context
 

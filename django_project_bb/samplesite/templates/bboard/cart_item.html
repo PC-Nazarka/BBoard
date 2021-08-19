@@ -15,11 +15,11 @@
             <p>{{ item_bb.price }} руб.</p>
             <p>{{ item_bb.content }}</p>
             <p><a class="text-decoration-none text-dark" href="{% url 'bboard:by_rubric' item_bb.rubric.pk %}">{{ item_bb.rubric.name }}</a></p>
-            {% if item_bb.user_id.id != user.id %}
-            <p><a class="text-decoration-none text-dark" href="{% url 'user_profile' item_bb.user_id.pk %}">{{ item_bb.user_id.username }}</a></p>
+            {% if item_bb.user.id != user.id %}
+            <p><a class="text-decoration-none text-dark" href="{% url 'user_profile' item_bb.user.pk %}">{{ item_bb.user.username }}</a></p>
             {% endif %}
             <p>{{ item_bb.published|date:"d.m.Y H:i:s" }}</p>
-                {% if item_bb.user_id.id == user.id %}
+                {% if item_bb.user.id == user.id %}
                 <div class="buttons">
                     <a href="{% url 'bboard:page_update' item_bb.id %}" class='btn btn-success'>Редактировать</a>
                     <form method="POST" action="{% url 'bboard:page_delete' item_bb.id %}">
