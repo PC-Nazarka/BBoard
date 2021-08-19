@@ -1,0 +1,60 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}Профиль{% endblock %}
+
+
+{% block content %}
+    <label>Ник:</label> {{ current_user.username }}<br>
+    <label>Имя:</label> {{ current_user.first_name }}<br>
+    <label>Фамилия:</label> {{ current_user.last_name }}<br>
+    <label>Email:</label> {{ current_user.email }}<br>
+    <label>Последний раз был в сети</label> {{ current_user.last_login }}<br>
+    <label>Дата регистрации:</label> {{ current_user.date_joined }}<br><br>
+    {% if current_user.id == user.id %}
+    <a class="btn btn-warning" href="{% url 'user_profile_update' user.pk %}">Сменить основную информацию о пользователе</a>
+    <a class="btn btn-warning" href="{% url 'account_email' %}">Сменить / добавить email</a>
+    <a class="btn btn-warning" href="{% url 'account_change_password' %}">Сменить пароль</a><br><br>
+    {% else %}
+        {% if user.is_authenticated %}
+        <div id='item'><a class='text-decoration-none btn btn-success' href="{% url 'chat:room' room %}">Написать владельцу</a></div><br>
+        {% else %}
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modelSend">Написать владельцу</button>
+        {% endif %}
+    {% endif %}
+    {% for item in current_item %}
+        <div class='row card-item bg-light'>
+            {% if item.img %}
+            <div class="col-2 col-sm-2">
+                <img class="img-fluid" src="{{ item.img.url }}"/>
+            </div>
+            {% endif %}
+            <div class="info-text col-10 col-sm-10">
+                <a class="text-dark text-decoration-none" href="{% url 'bboard:page' item.pk %}"><h2>{{ item.title }}</h2></a>
+                <p>{{ item.price }} руб.</p>
+                <p>{{ item.content }}</p>
+                <p><a class="text-decoration-none text-dark" href="{% url 'bboard:by_rubric' item.rubric.pk %}">{{ item.rubric.name }}</a></p>
+                <p>{{ item.published|date:"d.m.Y H:i:s" }}</p>
+            </div>
+        </div>
+    {% endfor %} 
+    
+    
+    <!-- Modal for send message -->
+    <div class="modal fade" id="modelSend" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Отправка сообщений</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            Перед отправкой сообщений авторизуйтесь
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ок</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+{% endblock %}

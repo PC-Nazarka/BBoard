@@ -1,0 +1,19 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}Поиск{% endblock %}
+
+{% block content %}
+    {% if object_list %}
+        {% for bb in object_list %}
+            <div class='row card-item bg-light'>
+                <a class="text-dark text-decoration-none" href="{% url 'bboard:page' bb.pk %}"><h2>{{ bb.title }}</h2></a>
+                <p>{{ bb.price }} руб.</p>
+                <p>{{ bb.content }}</p>
+                <p><a class="text-decoration-none text-dark" href="{% url 'bboard:by_rubric' bb.rubric.pk %}">{{ bb.rubric.name }}</a></p>
+                <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Объявления отсутствуют</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %} {{ current_rubric.name }} {% endblock %}
+
+
+{% block content %}
+    <h2 class="name_rubric">Рубрика {{ current_rubric.name }}</h2>
+    {% if bbs %}
+        {% for bb in bbs %}
+        <div class='row card-item bg-light'>
+            <h2>{{ bb.title }}</h2>
+            <p>{{ bb.price }} рублей</p>
+            <p>{{ bb.content }}</p>
+            <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Объявления отсутствуют</p>
+    {% endif %}
+{% endblock %}
+
+{% block pagination %}
+    {% if is_paginated %}
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+        {% endif %}
+
+        <li class="page-item active"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    {% endif %}
+{% endblock %}

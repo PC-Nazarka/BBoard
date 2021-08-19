@@ -1,0 +1,51 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+    {% if bbs %}
+        {% for bb in bbs %}
+            <div class='row card-item bg-light'>
+                {% if bb.img %}
+                <div class="col-2 col-sm-2">
+                     <img class="img-fluid" src="{{ bb.img.url }}"/>
+                </div>
+                {% endif %}
+                <div class="info-text col-10 col-sm-10">
+                    <a class="text-dark text-decoration-none" href="{% url 'bboard:page' bb.pk %}"><h2>{{ bb.title }}</h2></a>
+                    <p>{{ bb.price }} руб.</p>
+                    <p>{{ bb.content }}</p>
+                    <p><a class="text-decoration-none text-dark" href="{% url 'bboard:by_rubric' bb.rubric.pk %}">{{ bb.rubric.name }}</a></p>
+                    <p><a class="text-decoration-none text-dark" href="{% url 'user_profile' bb.user_id.pk %}">{{ bb.user_id.username }}</a></p>
+                    <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Объявления отсутствуют</p>
+    {% endif %}
+{% endblock %}
+
+{% block pagination %}
+    {% if is_paginated %}
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+        {% endif %}
+
+        <li class="page-item active"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    {% endif %}
+{% endblock %}

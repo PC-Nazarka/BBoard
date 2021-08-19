@@ -1,0 +1,13 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}Чаты{% endblock %}
+
+{% block content %}
+    {% for item in chat_item %}
+        {% if user.id != item.member_first.id %}
+        <div id='item'><a class='text-decoration-none text-dark chat-item' href="{% url 'chat:room' item.pk %}">Диалог с {{ item.member_first.username }}</a></div><br>
+        {% else %}
+        <div id='item'><a class='text-decoration-none text-dark chat-item' href="{% url 'chat:room' item.pk %}">Диалог с {{ item.member_second.username }}</a></div><br>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
