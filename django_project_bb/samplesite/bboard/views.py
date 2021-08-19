@@ -41,7 +41,7 @@ class CreateItem(generic.CreateView):
     form_class = forms.BbForm
 
     def form_valid(self, form):
-        form.instance.user_id = self.request.user
+        form.instance.user = self.request.user
         return super().form_valid(form)
 
 class NewItemPage(generic.DetailView, generic.edit.FormMixin):
@@ -52,7 +52,7 @@ class NewItemPage(generic.DetailView, generic.edit.FormMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        member = models.Bb.objects.get(pk=self.kwargs['pk']).user_id
+        member = models.Bb.objects.get(pk=self.kwargs['pk']).user
         if Room.objects.filter(member_first = self.request.user).filter(member_second = member):
             room = Room.objects.filter(member_first = self.request.user).filter(member_second = member)
         elif Room.objects.filter(member_second = self.request.user).filter(member_first = member):
@@ -75,7 +75,7 @@ class NewItemPage(generic.DetailView, generic.edit.FormMixin):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        form.instance.bb_id = self.get_object()
+        form.instance.bboard = self.get_object()
         form.instance.author = self.request.user
         self.object.save()
         return super().form_valid(form)

@@ -8,12 +8,12 @@ from django.contrib.contenttypes.fields import GenericRelation
 
 class Bb(models.Model):
     title = models.CharField(max_length=50, verbose_name="Товар")
-    content = models.TextField(null=True, blank=True, verbose_name="Описание")
-    price = models.FloatField(null=True, blank=True, verbose_name="Цена")
+    content = models.TextField(blank=True, verbose_name="Описание")
+    price = models.FloatField(blank=True, verbose_name="Цена")
     published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name="Опубликовано")
     img = models.ImageField(upload_to='images/', default='empty.jpg', null=True, verbose_name='Изображение')
     rubric = models.ForeignKey('Rubric', null=True, on_delete=models.CASCADE, verbose_name='Рубрика')
-    user_id = models.ForeignKey(User, null=True, on_delete=models.CASCADE, verbose_name='ID пользователя')
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, verbose_name='Автор')
     comment = GenericRelation('comment')
 
     class Meta:
@@ -25,7 +25,6 @@ class Bb(models.Model):
         return f'/item_bb_{self.id}'
 
     def save(self, *args, **kwargs):
-        print(self.img.name)
         if self.img.path[-9:] != 'empty.jpg':
             size = (200, 200)
             time = datetime.now().strftime("%Y-%m-%d")
@@ -34,7 +33,6 @@ class Bb(models.Model):
             file_name = head + "_" + time + "." + end_extention
             self.img.name = os.path.join(f"{self.title}/", f"user_{self.title}_{file_name}")
             super().save(*args, **kwargs)
-            print(self.img.path)
             original_photo = Image.open(self.img.path)
             width, height = original_photo.size
             if (width != 0) and (height != 0):
@@ -60,7 +58,7 @@ class Rubric(models.Model):
 class Comment(models.Model):
     author = models.ForeignKey(User, verbose_name='Автор', on_delete=models.CASCADE, blank=True, null=True)
     text = models.TextField(verbose_name='Текст комментария')
-    bb_id = models.ForeignKey(Bb, verbose_name='Объявление', on_delete=models.CASCADE, related_name='comment_bb', blank=True, null=True)
+    bboard = models.ForeignKey(Bb, verbose_name='Объявление', on_delete=models.CASCADE, related_name='comment_bb', blank=True, null=True)
     timestamp = models.DateTimeField(auto_now=True, verbose_name='Дата написания комментарий')
 
     def __str__(self):

@@ -2,6 +2,7 @@ from django.views import generic
 from . import models
 from django.db.models import Q
 
+
 class HomeChat(generic.ListView):
     template_name = 'chat/list_chat.html'
     context_object_name = 'chat_item'
