@@ -1,0 +1,101 @@
+{% extends 'layout/basic.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}{{ item_bb.title }}{% endblock %}
+ 
+{% block content %}
+    <div class='row card-item bg-light'>
+        {% if item_bb.img %}
+        <div class="col-2 col-sm-2">
+            <img class="img-fluid" src="{{ item_bb.img.url }}"/>
+        </div>
+        {% endif %}
+        <div class="info-text col-10 col-sm-10">
+            <a class="text-dark text-decoration-none" href="{% url 'bboard:page' item_bb.pk %}"><h2>{{ item_bb.title }}</h2></a>
+            <p>{{ item_bb.price }} руб.</p>
+            <p>{{ item_bb.content }}</p>
+            <p><a class="text-decoration-none text-dark" href="{% url 'bboard:by_rubric' item_bb.rubric.pk %}">{{ item_bb.rubric.name }}</a></p>
+            {% if item_bb.user_id.id != user.id %}
+            <p><a class="text-decoration-none text-dark" href="{% url 'user_profile' item_bb.user_id.pk %}">{{ item_bb.user_id.username }}</a></p>
+            {% endif %}
+            <p>{{ item_bb.published|date:"d.m.Y H:i:s" }}</p>
+                {% if item_bb.user_id.id == user.id %}
+                <div class="buttons">
+                    <a href="{% url 'bboard:page_update' item_bb.id %}" class='btn btn-success'>Редактировать</a>
+                    <form method="POST" action="{% url 'bboard:page_delete' item_bb.id %}">
+                        {% csrf_token %}
+                        <button type='submit' class="btn btn-danger">Удалить запись</button>
+                    </form>
+                </div>
+                {% else %}
+                    {% if user.is_authenticated %}
+                    <div id='item'><a class='text-decoration-none btn btn-success' href="{% url 'chat:room' room %}">Написать владельцу</a></div><br>
+                    {% else %}
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modelSend">Написать владельцу</button>
+                    {% endif %}
+                {% endif %}
+        </div>
+    </div>
+    <p>Комментарии ({{ item_bb.comment_bb.all.count }})</p>
+    <hr>
+    
+    <ul>
+    {% for item in item_bb.comment_bb.all %}
+        <p>{{ item.author }}</p>
+        <p>{{ item.timestamp }}</p>
+        <p>{{ item.text }}</p>
+        <hr>
+    {% endfor %}
+    </ul>
+    <p>Добавить комментарий</p>
+    <form action="" method='post'>
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if user.is_authenticated %}
+        <button type="submit" class="btn btn-primary">Добавить</button>
+        {% else %}
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Добавить</button>
+        {% endif %}
+    </form>
+    
+
+    <!-- Modal for comment -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Добавление комментария</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            Перед добавлением комментария авторизуйтесь
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ок</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal for send message -->
+    <div class="modal fade" id="modelSend" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Отправка сообщений</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            Перед отправкой сообщений авторизуйтесь
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ок</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+
+    </script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "account/base.html" %}
+
+{% load crispy_forms_filters %}
+
+{% block title %}Редактирование пользователя{% endblock %}
+
+{% block content %}
+<h2>Регистрация</h2>
+<form class="add" method="post">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <button class="btn btn-success" type="submit">Сохранить изменения</button>
+</form>
+
+{% endblock %}

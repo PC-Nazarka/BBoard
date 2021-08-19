@@ -1,0 +1,92 @@
+nav{
+    font-size: 16pt;
+    display: flex;
+    align-items: center;
+}
+
+section.bbs{
+    padding-top: 20px;
+    min-height: 950px;
+}
+
+.info-text{
+    padding-top: 10px;
+}
+
+.card-item{
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.name_rubric{
+    margin-bottom: 20px;
+}
+
+div.card-item p{
+    margin-bottom: 5px;
+}
+
+ul.navbar-nav{
+    align-items: center;
+}
+
+ul.navbar-nav form.search{
+    margin: 0px 20px;
+    align-items: center;
+}
+
+ul.navbar-nav form.search input{
+    width: 350px;
+}
+
+form.add{
+    width: 50%;
+}
+
+form.add .btn{
+    margin-top: 21px;
+}
+
+.row .buttons{
+    display: flex!important;
+    flex-direction: row;
+}
+
+.row .buttons button.btn{
+    margin-left: 10px;
+}
+
+div.info-text div.container{
+    padding: 0px!important;
+}
+
+div.messages{
+    height: 500px;
+    overflow-y: scroll;
+}
+
+div.message,
+.message_after{
+    padding: 10px 10px;
+}
+
+div.uname,
+div.uname_rt{
+    font-weight: 600;
+    display: inline;
+}
+
+div.time,
+div.time_rt{
+    font-size: 11px;
+    display: inline;
+}
+
+div.control{
+    padding: 20px 0px;
+}
+
+.chat-item{
+    padding: 20px 10px;
+}

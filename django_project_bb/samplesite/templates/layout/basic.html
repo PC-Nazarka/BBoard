@@ -1,0 +1,91 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'bboard/css/style.css' %}" type="text/css">
+        <title>{% block title %}{% endblock %} :: Доска объявления</title>
+    </head>
+    <body>
+        <header class="container-fluid bg-light">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light text-center">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="{% url 'bboard:index' %}"><h2>Объявления</h2></a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Рубрики
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        {% for rubric in rubrics %}
+                                        <li><a class="dropdown-item" href="{% url 'bboard:by_rubric' rubric.pk %}">{{ rubric.name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'bboard:add' %}">Добавить</a>
+                                </li>
+                                <li class="nav-item">
+                                    <form class="d-flex search" method="GET" action="{% url 'bboard:search' %}">
+                                        <input name="search" class="form-control me-2" type="search" placeholder="Поиск объявления" aria-label="Search">
+                                        <button class="btn btn-outline-success" type="submit">Поиск</button>
+                                    </form>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Пользователь
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        {% if user.is_authenticated %}
+                                            <li><a class="dropdown-item" href="{% url 'user_profile' user.pk %}">{{ user.username }}</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+
+                                            <form method="post" action="{% url 'account_logout' %}">
+                                                {% csrf_token %}
+                                                {% if redirect_field_value %}
+                                                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                                                {% endif %}
+                                                <button class="dropdown-item" type="submit">Выход</button>
+                                              </form>
+                                        {% else %}
+                                            <li><a class="dropdown-item" href="{% url 'account_login' %}">Вход</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'account_signup' %}">Регистрация</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        
+        <section class="bbs">
+            <div class="container">
+            {% block content %}
+            {% endblock %}
+            </div>
+        </section>
+        
+        <section class="pagination">
+            <div class="container">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                    {% block pagination %}
+                    {% endblock %}
+                    </ul>
+                </nav>
+            </div>
+        </section>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </body>
+</html>
