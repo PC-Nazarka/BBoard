@@ -40,7 +40,7 @@
         const data = JSON.parse(e.data);
 
         var now = String(new Date().toLocaleString());
-        document.querySelector('.message_after').innerHTML += ('<div class="uname_rt">' + data.username + '</div> ' + '<div class="time_rt">' + now + '</div> \n' + '<div class="content_rt">' + data.message + '</div> \n');
+        document.querySelector('.message_after').innerHTML += ('<div class="message">' + '<div class="uname_rt">' + data.username + '</div> ' + '<div class="time_rt">' + now + '</div> \n' + '<div class="content_rt">' + data.message + '</div>' + '</div>');
     };
 
     chatSocket.onclose = function(e) {

@@ -66,8 +66,7 @@ div.messages{
     overflow-y: scroll;
 }
 
-div.message,
-.message_after{
+div.message{
     padding: 10px 10px;
 }
 

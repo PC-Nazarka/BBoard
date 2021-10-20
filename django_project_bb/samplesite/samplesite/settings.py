@@ -103,11 +103,11 @@ DATABASES = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.google.com'
-# EMAIL_PORT = 587
 # EMAIL_USE_TSL = True
-# EMAIL_HOST_USER = 'djangoemailsmtp@gmail.com'
-# EMAIL_HOST_PASSWORD = 'imliaqijfupcjxww' 
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'xxx'
+# EMAIL_HOST_PASSWORD = 'xxx'
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
@@ -153,10 +153,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 
 # Default primary key field type

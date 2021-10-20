@@ -5,6 +5,7 @@ from . import models
 from chat.models import Room
 from django.db.models import Q
 
+
 class MainPage(generic.list.ListView):
     model = models.Bb
     template_name = 'bboard/index.html'
@@ -18,6 +19,7 @@ class MainPage(generic.list.ListView):
         context = super().get_context_data(**kwargs)
         context['rubrics'] = models.Rubric.objects.all()
         return context
+
 
 class RenderByRubric(generic.list.ListView):
     model = models.Bb
@@ -33,7 +35,8 @@ class RenderByRubric(generic.list.ListView):
         context['rubrics'] = models.Rubric.objects.all()
         context['current_rubric'] = models.Rubric.objects.get(pk = self.kwargs['rubric_id'])
         return context
-        
+
+
 class CreateItem(generic.CreateView):
     model = models.Bb
     success_url = '/'
@@ -43,6 +46,7 @@ class CreateItem(generic.CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
 
 class NewItemPage(generic.DetailView, generic.edit.FormMixin):
     model = models.Bb
@@ -80,10 +84,12 @@ class NewItemPage(generic.DetailView, generic.edit.FormMixin):
         self.object.save()
         return super().form_valid(form)
 
+
 class ItemUpdate(generic.UpdateView):
     model = models.Bb
     template_name = 'bboard/create.html'
     form_class = forms.BbForm
+
 
 class ItemDelete(generic.DeleteView):
     model = models.Bb
@@ -94,6 +100,7 @@ class ItemDelete(generic.DeleteView):
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
+
 class SearchResults(generic.ListView):
     model = models.Bb
     template_name = 'bboard/search.html'
@@ -101,7 +108,7 @@ class SearchResults(generic.ListView):
     def get_queryset(self):
         query = self.request.GET.get('search')
         if query:
-            object_list = models.Bb.objects.filter(Q(title__icontains=query) | Q(content__icontains=query) 
+            object_list = models.Bb.objects.filter(Q(title__icontains=query) | Q(content__icontains=query)
             | Q(title__icontains=query.upper()) | Q(content__icontains=query.upper())
             | Q(title__icontains=query.lower()) | Q(content__icontains=query.lower())
             | Q(title__icontains=query.capitalize()) | Q(content__icontains=query.capitalize()))

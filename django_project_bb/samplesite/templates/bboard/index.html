@@ -16,7 +16,9 @@
                     <p>{{ bb.price }} руб.</p>
                     <p>{{ bb.content }}</p>
                     <p><a class="text-decoration-none text-dark" href="{% url 'bboard:by_rubric' bb.rubric.pk %}">{{ bb.rubric.name }}</a></p>
+                    {% if user != bb.user %}
                     <p><a class="text-decoration-none text-dark" href="{% url 'user_profile' bb.user.pk %}">{{ bb.user.username }}</a></p>
+                    {% endif %}
                     <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
                 </div>
             </div>

@@ -5,6 +5,7 @@ from asgiref.sync import sync_to_async
 
 from . import models
 
+
 class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
