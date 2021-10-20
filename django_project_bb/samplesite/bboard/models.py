@@ -44,6 +44,7 @@ class Bb(models.Model):
     def __str__(self):
         return self.title
 
+
 class Rubric(models.Model):
     name = models.CharField(max_length=20, db_index=True, verbose_name="Название")
 
@@ -54,6 +55,7 @@ class Rubric(models.Model):
         verbose_name_plural = "Рубрики"
         verbose_name = "Рубрика"
         ordering = ['name']
+
 
 class Comment(models.Model):
     author = models.ForeignKey(User, verbose_name='Автор', on_delete=models.CASCADE, blank=True, null=True)

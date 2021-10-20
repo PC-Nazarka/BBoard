@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Message(models.Model):
     username = models.CharField(max_length=255)
     room = models.ForeignKey('Room', on_delete=models.CASCADE, null=True)
@@ -14,6 +15,7 @@ class Message(models.Model):
         ordering = ('date_added',)
         verbose_name_plural = "Сообщения"
         verbose_name = "Сообщение"
+
 
 class Room(models.Model):
     member_first = models.ForeignKey(User, related_name='member_first', on_delete=models.CASCADE, null=True)
